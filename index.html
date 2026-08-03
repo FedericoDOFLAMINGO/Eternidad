@@ -195,7 +195,7 @@
 <div id="welcome" onclick="abrirCarta()">
   <div class="rose-icon">🌹</div>
   <h1>Para mi princesita</h1>
-  <p>Toca para abrir</p>
+  <p>abrir</p>
 </div>
 
 <audio id="audio" src="A&F.mp3" loop></audio>
@@ -210,14 +210,14 @@
     <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
     <div class="page-inner">
       <div class="titulo-carta">Mi princesita</div>
-      <div class="subtitulo">Para Angy</div>
+      <div class="subtitulo">MI VIDA</div>
       <div class="divider">🌹 ❀ 🌹</div>
       <div class="foto-marco">
         <img src="LAF.jpg" alt="Nosotros">
-        <span>Nosotros</span>
+        <span>ETERNAMENTE TÚ</span>
       </div>
       <div class="texto-carta">
-        <p>Angy, quiero decirte que eres mi princesita.</p>
+        <p>Mi Niña Hermosa , quiero decirte que eres mi princesita.</p>
         <p>Te quiero sin dudas y sin penas, con toda la verdad, con todo mi amor y con todo lo que soy. Amo todo lo que eres.</p>
       </div>
     </div>
@@ -238,7 +238,7 @@
       </div>
       <div class="corazon-cont">
         <button id="corazon-btn" onclick="sumarCorazon()">❤️</button>
-        <div id="contador">Toca el corazón — así de veces pienso en ti</div>
+        <div id="contador">Toca el corazón, así de veces pienso en ti</div>
       </div>
     </div>
   </div>
@@ -274,7 +274,7 @@
       <div class="titulo-carta" style="font-size:2.2rem;">Jardín de rosas</div>
       <div class="subtitulo">Toca cada rosa</div>
       <div class="jardin" id="jardin"></div>
-      <div class="mensaje-rosa" id="mensaje-rosa">Toca una rosa para leer un pedacito de lo que siento</div>
+      <div class="mensaje-rosa" id="mensaje-rosa">Toca una rosa</div>
     </div>
   </div>
 
@@ -313,9 +313,9 @@
       <div class="titulo-carta">Te amo, princesita</div>
       <div class="divider">🌹 ❀ 🌹</div>
       <div class="texto-carta" style="text-align:center;">
-        <p>Esto es solo un pedacito de lo que siento por ti.</p>
+        <p>Las palabras y el tiempo nunca son suficientes para decirte todo lo que siento, para expresarte y hacerte sentir todo lo que quiero para ti pero, hay siempre un pequeño momento en el que puedo hacerlo, en el que puedo decirte lo que eres y loque significas para mí, Te adoro y Te AMO siempre, y es  la única verdad y realidad sobre mí, que no habrá otro sentimiento más grande en la existencia que se iguale o compare al amor que tengo por ti.</p>
       </div>
-      <div class="firma">Fer</div>
+      <div class="firma">TU Latoso, Fer</div>
       <div class="rosa-final">🌹🌹🌹</div>
     </div>
   </div>
@@ -427,7 +427,7 @@ async function tocarEspejo() {
       link.click();
 
       instr.textContent = '';
-      msg.textContent = '✨ Así te ves de bonita. Se guardó en tu galería como recuerdo ✨';
+      msg.textContent = '✨ Así te ves de bonita, de perfecta siempre. Se guardó en tu galería como recuerdo ✨';
       espejoUsado = true;
     }, 800);
   } catch (err) {
@@ -443,7 +443,7 @@ mensajesRosas.forEach((msg) => {
   btn.className = 'rosa-btn';
   btn.textContent = '🌹';
   btn.onclick = () => {
-    document.getElementById('mensaje-rosa').textContent = msg + ' — pienso en eso todos los días.';
+    document.getElementById('mensaje-rosa').textContent = msg + ' La amo, todo de ti lo amo y me hace sentir tan feliz cada que mi corazón lo siente, y eso es siempre.';
     btn.classList.add('usada');
   };
   jardin.appendChild(btn);
