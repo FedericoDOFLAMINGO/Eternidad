@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para mi princesita</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: radial-gradient(ellipse at top, #241129 0%, #0a0510 70%);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    color: #3a2a1a;
+    position: relative;
+  }
+
+  #petals { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+  .petal {
+    position: absolute;
+    top: -30px;
+    font-size: 1.3rem;
+    opacity: 0.85;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-30px) translateX(0) rotate(0deg); }
+    100% { transform: translateY(110vh) translateX(40px) rotate(360deg); }
+  }
+
+  #welcome {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #2a1530 0%, #0a0510 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    cursor: pointer;
+    transition: opacity 1.2s ease;
+  }
+  #welcome h1 {
+    font-family: 'Great Vibes', cursive;
+    color: #f4d78e;
+    font-size: 3.2rem;
+    text-shadow: 0 0 20px rgba(244, 215, 142, 0.5);
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0 20px;
+  }
+  #welcome p { color: #d8b8e8; font-size: 1.2rem; letter-spacing: 1px; animation: pulse 2s infinite; }
+  .rose-icon { font-size: 3rem; margin-bottom: 25px; animation: floatRose 3s ease-in-out infinite; }
+  @keyframes floatRose {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+  }
+  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  #welcome.hide { opacity: 0; pointer-events: none; }
+
+  #music-toggle {
+    position: fixed; top: 18px; right: 18px; z-index: 50;
+    background: #7a2e3a; color: #f4d78e; border: none;
+    width: 46px; height: 46px; border-radius: 50%;
+    font-size: 1.3rem; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+
+  .book-wrapper { position: relative; max-width: 650px; width: 92%; margin: 40px auto; z-index: 10; }
+
+  .page {
+    position: relative;
+    display: none;
+    padding: 55px 45px;
+    background: #fdf6ea;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,150,100,0.06) 28px);
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,160,80,0.3);
+    min-height: 480px;
+    animation: pageIn 0.6s ease;
+  }
+  .page.active { display: block; }
+  @keyframes pageIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+  .vine-corner { position: absolute; width: 150px; height: 150px; z-index: 2; pointer-events: none; }
+  .vine-tl { top: -16px; left: -16px; }
+  .vine-tr { top: -16px; right: -16px; transform: scaleX(-1); }
+  .vine-bl { bottom: -16px; left: -16px; transform: scaleY(-1); }
+  .vine-br { bottom: -16px; right: -16px; transform: scale(-1,-1); }
+
+  .page-inner { position: relative; z-index: 3; }
+
+  .titulo-carta { font-family: 'Great Vibes', cursive; font-size: 2.8rem; text-align: center; color: #7a2e3a; margin-bottom: 5px; }
+  .subtitulo { text-align: center; font-size: 0.95rem; letter-spacing: 3px; text-transform: uppercase; color: #a67c3d; margin-bottom: 20px; }
+  .divider { text-align: center; color: #a67c3d; font-size: 1.2rem; margin: 10px 0 25px; }
+
+  .texto-carta { font-size: 1.3rem; line-height: 1.85; color: #3a2a1a; text-align: left; }
+  .texto-carta p { margin-bottom: 20px; }
+
+  .firma { text-align: right; font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #7a2e3a; margin-top: 20px; }
+  .rosa-final { text-align: center; font-size: 1.6rem; margin-top: 10px; letter-spacing: 18px; }
+
+  .foto-marco {
+    width: 210px; margin: 10px auto 25px; padding: 10px;
+    background: #fff; border: 1px solid #d8b878;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transform: rotate(-2deg); transition: transform 0.3s;
+  }
+  .foto-marco:hover { transform: rotate(0deg) scale(1.04); }
+  .foto-marco img { width: 100%; display: block; }
+  .foto-marco span { display: block; text-align: center; font-family: 'Great Vibes', cursive; font-size: 1.3rem; color: #7a2e3a; padding-top: 8px; }
+
+  .espejo-cont { text-align: center; margin: 20px 0; }
+  .espejo {
+    width: 200px; height: 240px; margin: 0 auto;
+    border-radius: 50% 50% 45% 45%;
+    border: 10px solid #a67c3d;
+    box-shadow: 0 0 0 4px #7a2e3a, inset 0 0 40px rgba(120,80,150,0.5), 0 10px 30px rgba(0,0,0,0.4);
+    background: radial-gradient(circle at 40% 30%, #4a2a5a, #1a0a25 80%);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .espejo-texto { color: #f4d78e; font-family: 'Great Vibes', cursive; font-size: 1.5rem; padding: 15px; opacity: 0; transition: opacity 0.6s; }
+  .espejo.activo .espejo-texto { opacity: 1; }
+  .espejo-hint { opacity: 1; transition: opacity 0.6s; color: #d8b8e8; }
+  .espejo.activo .espejo-hint { opacity: 0; position: absolute; }
+  .espejo-cont p.instr { color: #a67c3d; font-size: 0.95rem; margin-top: 12px; letter-spacing: 1px; }
+  .espejo video, .espejo img.espejo-foto {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; transform: scaleX(-1); border-radius: 50% 50% 45% 45%;
+  }
+  .espejo-msg { color: #d8b8e8; font-size: 0.95rem; margin-top: 12px; min-height: 1.2em; }
+
+  .jardin { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin: 25px 0; }
+  .rosa-btn { background: none; border: none; font-size: 2.4rem; cursor: pointer; transition: transform 0.25s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+  .rosa-btn:hover { transform: scale(1.25) rotate(-8deg); }
+  .rosa-btn.usada { opacity: 0.35; transform: scale(0.9); }
+  .mensaje-rosa { min-height: 70px; text-align: center; font-size: 1.3rem; color: #7a2e3a; font-style: italic; padding: 15px; border-top: 1px dashed #d8b878; margin-top: 10px; }
+
+  .canvas-cont { text-align: center; }
+  #lienzo {
+    border: 3px solid #a67c3d; border-radius: 8px; background: #fffaf0;
+    cursor: crosshair; touch-action: none; max-width: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .colores { margin: 15px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .color-btn { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1px #a67c3d; }
+  .color-btn.selected { box-shadow: 0 0 0 3px #7a2e3a; }
+  .canvas-botones { margin-top: 15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .canvas-botones button {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; padding: 8px 18px;
+    border-radius: 20px; border: 1px solid #7a2e3a; background: #fdf6ea; color: #7a2e3a;
+    cursor: pointer; transition: 0.2s;
+  }
+  .canvas-botones button:hover { background: #7a2e3a; color: #fdf6ea; }
+
+  .corazon-cont { text-align: center; margin: 25px 0; }
+  #corazon-btn { font-size: 3.2rem; background: none; border: none; cursor: pointer; transition: transform 0.15s; }
+  #corazon-btn:active { transform: scale(1.4); }
+  #contador { font-size: 1.1rem; color: #7a2e3a; margin-top: 8px; }
+
+  .nav-book { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 0 5px; }
+  .nav-btn {
+    background: #7a2e3a; color: #f4d78e; border: none; padding: 10px 20px;
+    border-radius: 24px; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;
+    cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.2s;
+  }
+  .nav-btn:hover { background: #a83246; }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .page-dots { display: flex; gap: 7px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(122,46,58,0.3); }
+  .dot.active { background: #7a2e3a; }
+
+  @media (max-width: 600px) {
+    .page { padding: 40px 20px; }
+    .titulo-carta { font-size: 2.2rem; }
+    .texto-carta { font-size: 1.1rem; }
+    .vine-corner { width: 90px; height: 90px; }
+    .espejo { width: 160px; height: 190px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="petals"></div>
+
+<div id="welcome" onclick="abrirCarta()">
+  <div class="rose-icon">🌹</div>
+  <h1>Para mi princesita</h1>
+  <p>Toca para abrir</p>
+</div>
+
+<audio id="audio" src="A&F.mp3" loop></audio>
+<button id="music-toggle" onclick="toggleMusica()" style="display:none;">🔊</button>
+
+<div class="book-wrapper" id="book">
+
+  <div class="page active" data-page="1">
+    <svg class="vine-corner vine-tl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-tr" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-bl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <div class="page-inner">
+      <div class="titulo-carta">Mi princesita</div>
+      <div class="subtitulo">Para Angy</div>
+      <div class="divider">🌹 ❀ 🌹</div>
+      <div class="foto-marco">
+        <img src="LAF.jpg" alt="Nosotros">
+        <span>Nosotros</span>
+      </div>
+      <div class="texto-carta">
+        <p>Angy, quiero decirte que eres mi princesita.</p>
+        <p>Te quiero sin dudas y sin penas, con toda la verdad, con todo mi amor y con todo lo que soy. Amo todo lo que eres.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="2">
+    <svg class="vine-corner vine-tl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-tr" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-bl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <div class="page-inner">
+      <div class="titulo-carta" style="font-size:2.2rem;">Eres mía</div>
+      <div class="divider">🌹</div>
+      <div class="texto-carta">
+        <p>Eres mía y lo vas a ser por siempre.</p>
+        <p>En mi mente siempre estás. No hay día en que deje de pensar en ti: en tu sonrisita, en tu mirada, en tu risa, en tus palabras, en tu voz, en tu olor, en tu calidez.</p>
+        <p>Te amo.</p>
+      </div>
+      <div class="corazon-cont">
+        <button id="corazon-btn" onclick="sumarCorazon()">❤️</button>
+        <div id="contador">Toca el corazón — así de veces pienso en ti</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="3">
+    <svg class="vine-corner vine-tl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-tr" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-bl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <div class="page-inner">
+      <div class="titulo-carta" style="font-size:2.2rem;">El espejo encantado</div>
+      <div class="divider">🪞</div>
+      <div class="espejo-cont">
+        <div class="espejo" id="espejo" onclick="tocarEspejo()">
+          <div class="espejo-hint">Tócame</div>
+          <div class="espejo-texto">Muéstrame<br>a la persona<br>que amo</div>
+          <video id="espejo-video" autoplay playsinline muted style="display:none;"></video>
+          <img id="espejo-foto" class="espejo-foto" style="display:none;" alt="Tu reflejo">
+        </div>
+        <canvas id="espejo-canvas" style="display:none;"></canvas>
+        <p class="instr" id="espejo-instr">Toca el espejo</p>
+        <p class="espejo-msg" id="espejo-msg"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="4">
+    <svg class="vine-corner vine-tl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-tr" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-bl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <div class="page-inner">
+      <div class="titulo-carta" style="font-size:2.2rem;">Jardín de rosas</div>
+      <div class="subtitulo">Toca cada rosa</div>
+      <div class="jardin" id="jardin"></div>
+      <div class="mensaje-rosa" id="mensaje-rosa">Toca una rosa para leer un pedacito de lo que siento</div>
+    </div>
+  </div>
+
+  <div class="page" data-page="5">
+    <svg class="vine-corner vine-tl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-tr" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-bl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <div class="page-inner">
+      <div class="titulo-carta" style="font-size:2.2rem;">Dibújame algo</div>
+      <div class="subtitulo">Con el dedo o el mouse</div>
+      <div class="canvas-cont">
+        <canvas id="lienzo" width="500" height="320"></canvas>
+        <div class="colores">
+          <div class="color-btn selected" style="background:#7a2e3a;" onclick="elegirColor('#7a2e3a',this)"></div>
+          <div class="color-btn" style="background:#c94a5f;" onclick="elegirColor('#c94a5f',this)"></div>
+          <div class="color-btn" style="background:#4a7c3f;" onclick="elegirColor('#4a7c3f',this)"></div>
+          <div class="color-btn" style="background:#a67c3d;" onclick="elegirColor('#a67c3d',this)"></div>
+          <div class="color-btn" style="background:#2a1a3a;" onclick="elegirColor('#2a1a3a',this)"></div>
+          <div class="color-btn" style="background:#f4d78e;" onclick="elegirColor('#f4d78e',this)"></div>
+        </div>
+        <div class="canvas-botones">
+          <button onclick="limpiarLienzo()">Borrar todo</button>
+          <button onclick="descargarDibujo()">Guardar dibujo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="6">
+    <svg class="vine-corner vine-tl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-tr" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-bl" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <svg class="vine-corner vine-br" viewBox="0 0 160 160"><path d="M5,5 C30,20 20,50 45,60 C70,70 60,100 85,105" fill="none" stroke="#4a7c3f" stroke-width="3"/><circle cx="20" cy="15" r="7" fill="#a83246"/><circle cx="42" cy="58" r="6" fill="#a83246"/><circle cx="83" cy="103" r="6" fill="#a83246"/></svg>
+    <div class="page-inner">
+      <div class="titulo-carta">Te amo, princesita</div>
+      <div class="divider">🌹 ❀ 🌹</div>
+      <div class="texto-carta" style="text-align:center;">
+        <p>Esto es solo un pedacito de lo que siento por ti.</p>
+      </div>
+      <div class="firma">Fer</div>
+      <div class="rosa-final">🌹🌹🌹</div>
+    </div>
+  </div>
+
+  <div class="nav-book">
+    <button class="nav-btn" id="btn-prev" onclick="cambiarPagina(-1)">← Atrás</button>
+    <div class="page-dots" id="dots"></div>
+    <button class="nav-btn" id="btn-next" onclick="cambiarPagina(1)">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+function abrirCarta() {
+  const welcome = document.getElementById('welcome');
+  const audio = document.getElementById('audio');
+  audio.play().catch(()=>{});
+  welcome.classList.add('hide');
+  document.getElementById('music-toggle').style.display = 'block';
+  setTimeout(() => { welcome.style.display = 'none'; }, 1200);
+}
+function toggleMusica() {
+  const audio = document.getElementById('audio');
+  const btn = document.getElementById('music-toggle');
+  if (audio.paused) { audio.play(); btn.textContent = '🔊'; }
+  else { audio.pause(); btn.textContent = '🔇'; }
+}
+
+const petalContainer = document.getElementById('petals');
+for (let i=0; i<18; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = '🌸';
+  p.style.left = Math.random()*100 + 'vw';
+  p.style.animationDuration = (8 + Math.random()*10) + 's';
+  p.style.animationDelay = (Math.random()*10) + 's';
+  p.style.fontSize = (0.8 + Math.random()*1) + 'rem';
+  petalContainer.appendChild(p);
+}
+
+const totalPaginas = 6;
+let paginaActual = 1;
+const dotsCont = document.getElementById('dots');
+for (let i=1; i<=totalPaginas; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===1 ? ' active' : '');
+  dotsCont.appendChild(d);
+}
+function mostrarPagina(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.page[data-page="${n}"]`).classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === n-1));
+  document.getElementById('btn-prev').disabled = (n===1);
+  document.getElementById('btn-next').disabled = (n===totalPaginas);
+}
+function cambiarPagina(dir) {
+  const nueva = paginaActual + dir;
+  if (nueva >= 1 && nueva <= totalPaginas) {
+    paginaActual = nueva;
+    mostrarPagina(paginaActual);
+  }
+}
+mostrarPagina(1);
+
+let corazones = 0;
+function sumarCorazon() {
+  corazones++;
+  document.getElementById('contador').textContent = corazones + (corazones===1 ? ' vez pienso en ti... y sigo contando' : ' veces pienso en ti... y sigo contando');
+  const btn = document.getElementById('corazon-btn');
+  btn.style.transform = 'scale(1.3)';
+  setTimeout(()=> btn.style.transform = 'scale(1)', 150);
+}
+
+let espejoUsado = false;
+async function tocarEspejo() {
+  if (espejoUsado) return;
+  const espejo = document.getElementById('espejo');
+  const video = document.getElementById('espejo-video');
+  const foto = document.getElementById('espejo-foto');
+  const canvas = document.getElementById('espejo-canvas');
+  const instr = document.getElementById('espejo-instr');
+  const msg = document.getElementById('espejo-msg');
+
+  espejo.classList.add('activo');
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+    video.srcObject = stream;
+    video.style.display = 'block';
+    instr.textContent = 'Sonríe...';
+
+    setTimeout(() => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0);
+
+      stream.getTracks().forEach(t => t.stop());
+      video.style.display = 'none';
+
+      const dataUrl = canvas.toDataURL('image/png');
+      foto.src = dataUrl;
+      foto.style.display = 'block';
+
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'mi-recuerdo-espejo-encantado.png';
+      link.click();
+
+      instr.textContent = '';
+      msg.textContent = '✨ Así te ves de bonita. Se guardó en tu galería como recuerdo ✨';
+      espejoUsado = true;
+    }, 800);
+  } catch (err) {
+    instr.textContent = '';
+    msg.textContent = 'No pude acceder a la cámara. Revisa los permisos 💔';
+  }
+}
+
+const mensajesRosas = ['Tu sonrisita','Tu mirada','Tu risa','Tus palabras','Tu voz','Tu olor','Tu calidez'];
+const jardin = document.getElementById('jardin');
+mensajesRosas.forEach((msg) => {
+  const btn = document.createElement('button');
+  btn.className = 'rosa-btn';
+  btn.textContent = '🌹';
+  btn.onclick = () => {
+    document.getElementById('mensaje-rosa').textContent = msg + ' — pienso en eso todos los días.';
+    btn.classList.add('usada');
+  };
+  jardin.appendChild(btn);
+});
+
+const canvas = document.getElementById('lienzo');
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#fffaf0';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.lineWidth = 4;
+ctx.lineCap = 'round';
+ctx.strokeStyle = '#7a2e3a';
+let dibujando = false;
+let colorActual = '#7a2e3a';
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  if (e.touches) {
+    return { x: (e.touches[0].clientX - rect.left) * scaleX, y: (e.touches[0].clientY - rect.top) * scaleY };
+  }
+  return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+}
+function empezarDibujo(e) {
+  dibujando = true;
+  const pos = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+  e.preventDefault();
+}
+function dibujar(e) {
+  if (!dibujando) return;
+  const pos = getPos(e);
+  ctx.strokeStyle = colorActual;
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  e.preventDefault();
+}
+function terminarDibujo() { dibujando = false; }
+
+canvas.addEventListener('mousedown', empezarDibujo);
+canvas.addEventListener('mousemove', dibujar);
+canvas.addEventListener('mouseup', terminarDibujo);
+canvas.addEventListener('mouseleave', terminarDibujo);
+canvas.addEventListener('touchstart', empezarDibujo);
+canvas.addEventListener('touchmove', dibujar);
+canvas.addEventListener('touchend', terminarDibujo);
+
+function elegirColor(color, el) {
+  colorActual = color;
+  document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function limpiarLienzo() {
+  ctx.fillStyle = '#fffaf0';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+function descargarDibujo() {
+  const link = document.createElement('a');
+  link.download = 'dibujo_para_fer.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+</script>
+
+</body>
+</html>
